@@ -57,16 +57,17 @@ const Signup: React.FC = () => {
                     </div>
                     <div className="flex space-x-4 mb-6">
                         <button
+                            onClick={firebase?.signinWithGoogle}
                             type="button"
                             className="flex items-center justify-center w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 shadow-lg"
                         >
-                            Signup with <FaGoogle className="ml-2 text-xl" />
+                            Login with <FaGoogle className="ml-2 text-xl" />
                         </button>
                         <button
                             type="button"
                             className="flex items-center justify-center w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900 shadow-lg"
                         >
-                            Signup with <FaGithub className="ml-2 text-xl" />
+                            Login with <FaGithub className="ml-2 text-xl" />
                         </button>
                     </div>
                     <button

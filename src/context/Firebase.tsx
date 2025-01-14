@@ -1,10 +1,11 @@
 import { createContext, useContext } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 interface FirebaseContextType {
     signupUserWithEmailAndPassword: (email: string, password: string) => Promise<import("firebase/auth").UserCredential>;
     signinUserWithEmailAndPassword: (email: string, password: string) => Promise<import("firebase/auth").UserCredential>;
+    signinWithGoogle: () => Promise<import("firebase/auth").UserCredential>;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | null>(null);
@@ -23,6 +24,8 @@ export const useFirebase = () => useContext(FirebaseContext);
 const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp)
 
+const googleProivder = new GoogleAuthProvider();
+
 export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = (props) => {
 
     const signupUserWithEmailAndPassword = (email: string, password: string) =>
@@ -30,8 +33,11 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = (props)
 
     const signinUserWithEmailAndPassword = (email: string, password: string) => signInWithEmailAndPassword(firebaseAuth, email, password);
 
+    const signinWithGoogle = () => signInWithPopup(firebaseAuth, googleProivder);
+
     return <FirebaseContext.Provider value={{
         signupUserWithEmailAndPassword,
-        signinUserWithEmailAndPassword
+        signinUserWithEmailAndPassword,
+        signinWithGoogle
     }}>{props.children}</FirebaseContext.Provider>
 };
