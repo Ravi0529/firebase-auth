@@ -1,11 +1,12 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, GithubAuthProvider } from "firebase/auth";
 
 interface FirebaseContextType {
     signupUserWithEmailAndPassword: (email: string, password: string) => Promise<import("firebase/auth").UserCredential>;
     signinUserWithEmailAndPassword: (email: string, password: string) => Promise<import("firebase/auth").UserCredential>;
     signinWithGoogle: () => Promise<import("firebase/auth").UserCredential>;
+    signinWithGithub: () => Promise<import("firebase/auth").UserCredential>;
     isLoggedIn: boolean;
 }
 
@@ -26,6 +27,7 @@ const firebaseApp = initializeApp(firebaseConfig);
 const firebaseAuth = getAuth(firebaseApp)
 
 const googleProivder = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = (props) => {
 
@@ -45,12 +47,15 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = (props)
 
     const signinWithGoogle = () => signInWithPopup(firebaseAuth, googleProivder);
 
+    const signinWithGithub = () => signInWithPopup(firebaseAuth, githubProvider);
+
     const isLoggedIn = user ? true : false;
 
     return <FirebaseContext.Provider value={{
         signupUserWithEmailAndPassword,
         signinUserWithEmailAndPassword,
         signinWithGoogle,
+        signinWithGithub,
         isLoggedIn
     }}>{props.children}</FirebaseContext.Provider>
 };

@@ -64,6 +64,7 @@ const Signup: React.FC = () => {
                             Sign up with <FaGoogle className="ml-2 text-xl" />
                         </button>
                         <button
+                            onClick={firebase?.signinWithGithub}
                             type="button"
                             className="flex items-center justify-center w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900 shadow-lg"
                         >
