@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaGoogle, FaGithub } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useFirebase } from '../context/Firebase';
@@ -17,6 +17,10 @@ const Signup: React.FC = () => {
     }
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (firebase?.isLoggedIn) navigate("/")
+    }, [firebase, navigate])
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-200">
@@ -61,13 +65,13 @@ const Signup: React.FC = () => {
                             type="button"
                             className="flex items-center justify-center w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 shadow-lg"
                         >
-                            Login with <FaGoogle className="ml-2 text-xl" />
+                            Sign up with <FaGoogle className="ml-2 text-xl" />
                         </button>
                         <button
                             type="button"
                             className="flex items-center justify-center w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900 shadow-lg"
                         >
-                            Login with <FaGithub className="ml-2 text-xl" />
+                            Sign up with <FaGithub className="ml-2 text-xl" />
                         </button>
                     </div>
                     <button
