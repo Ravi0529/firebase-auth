@@ -1,9 +1,10 @@
 import { createContext, useContext } from "react";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 interface FirebaseContextType {
     signupUserWithEmailAndPassword: (email: string, password: string) => Promise<import("firebase/auth").UserCredential>;
+    signinUserWithEmailAndPassword: (email: string, password: string) => Promise<import("firebase/auth").UserCredential>;
 }
 
 const FirebaseContext = createContext<FirebaseContextType | null>(null);
@@ -27,5 +28,10 @@ export const FirebaseProvider: React.FC<{ children: React.ReactNode }> = (props)
     const signupUserWithEmailAndPassword = (email: string, password: string) =>
         createUserWithEmailAndPassword(firebaseAuth, email, password);
 
-    return <FirebaseContext.Provider value={{ signupUserWithEmailAndPassword }}>{props.children}</FirebaseContext.Provider>
+    const signinUserWithEmailAndPassword = (email: string, password: string) => signInWithEmailAndPassword(firebaseAuth, email, password);
+
+    return <FirebaseContext.Provider value={{
+        signupUserWithEmailAndPassword,
+        signinUserWithEmailAndPassword
+    }}>{props.children}</FirebaseContext.Provider>
 };
